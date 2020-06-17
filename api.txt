@@ -1,0 +1,599 @@
+Открытое API, авторизация не требуется
+
+1. 	Тестовый запрос
+	GET /
+	parameters: none
+	return: current framework version (To-Be-Changed)
+
+2.	Тестовый запрос
+	GET /test
+	parameters: any
+	return: request parameters (TBC)
+
+3.	Логин
+	POST /api/login
+	parameters: 
+	{
+		"username":"teacher_2@example.com",
+		"password":"secret"
+	}
+	return:
+	{
+	    "token_type": "Bearer",
+	    "expires_in": 3600,
+	    "access_token": "...",
+	    "refresh_token": "..."
+	}
+
+4. 	Обновление токена
+	POST /api/login/refresh
+	parameters:
+	{
+		"refresh_token":"..."
+	}
+	return:
+	{
+	    "token_type": "Bearer",
+	    "expires_in": 3600,
+	    "access_token": "...",
+	    "refresh_token": "..."
+	}
+
+5.	Регистрация нового пользователя
+	POST /api/register
+	parameters:
+	{
+        "phone":"+78901234567",
+        "name":"Иванов Иван Петрович",
+        "email":"user@example.com",
+        "password":"secret",
+        "type":"teacher|student"
+	}
+	return:
+	{
+	    "id": 5,
+	    "type": "student",
+	    "email": "user@example.com",
+	    "phone": "+78901234567",
+	    "is_active": "0",
+	    "image": "avatar.png",
+	    "name": "Иванов Иван Петрович",
+	    "registration_id": "e66dd55edafd41e8920bedf4308df060"
+	}
+
+	Регистрация требует подтверждения. Подтверждение должно прийти на почту пользователю. Сейчас, 
+	вместо этого приходит registration_id в ответе (см. следующий запрос)
+
+6.	Подтверждение регистрации
+	GET /api/register/validate/{id} (например, /api/register/validate/e66dd55edafd41e8920bedf4308df060)
+	parameters: none
+	return:
+	{
+	    "id": 5,
+	    "type": "student",
+	    "email": "user@example.com",
+	    "phone": "+78901234567",
+	    "is_active": 1,
+	    "image": "avatar.png",
+	    "name": "Иванов Иван Петрович",
+	    "message": "Registration was successful"
+	}
+
+7.	Список преподавателей
+	GET /api/teachers
+	parameters: (TBD) tag_a=1&tag_b=3&...&tag_z=22&offset=10&limit=10
+	return:
+	[
+	    {
+	        "id": 2,
+	        "type": "teacher",
+	        "email": "teacher_1@example.com",
+	        "phone": "+79001234501",
+	        "is_active": "1",
+	        "image": "avatar.png",
+	        "name": "Ворошилов Виктор Сергеевич"
+	    },
+	    {
+	        "id": 3,
+	        "type": "teacher",
+	        "email": "teacher_2@example.com",
+	        "phone": "+79001234502",
+	        "is_active": "1",
+	        "image": "8647a5bd48a70da9695583a309d54e13.jpg",
+	        "name": "Барышева Светлана Валентиновна"
+	    }
+	]	
+
+8.	Список курсов
+	GET /api/courses
+	parameters: (TBD) name='абырвалг'&tag_a=1&tag_b=2&...&tag_z=3&offset=10&limit=10
+    return:
+	[
+	    {
+	        "id": 1,
+	        "title": "Русский язык",
+	        "image": "course-placeholder.png",
+	        "price": "0",
+	        "duration": "0",
+	        "annotation": "Обзорный курс по русскому языку для подготовки школьников к ОГЭ/ЕГЭ",
+	        "description": null,
+	        "contents": null,
+	        "is_published": "1",
+	        "user": {
+	            "id": 3,
+	            "name": "Барышева Светлана Валентиновна",
+	            "email": "teacher_2@example.com",
+	            "phone": "+79001234502",
+	            "type": "teacher",
+	            "is_active": "1",
+	            "image": "8647a5bd48a70da9695583a309d54e13.jpg",
+	            "profile": null
+	        },
+	        "documents": [],
+	        "tags": []
+	    },
+	    {
+	        "id": 2,
+	        "title": "Литература",
+	        "image": "course-placeholder.png",
+	        "price": "0",
+	        "duration": "0",
+	        "annotation": "Обзорный курс по литературе для подготовки школьников к ОГЭ/ЕГЭ",
+	        "description": null,
+	        "contents": null,
+	        "is_published": "1",
+	        "user": {
+	            "id": 3,
+	            "name": "Барышева Светлана Валентиновна",
+	            "email": "teacher_2@example.com",
+	            "phone": "+79001234502",
+	            "type": "teacher",
+	            "is_active": "1",
+	            "image": "8647a5bd48a70da9695583a309d54e13.jpg",
+	            "profile": null
+	        },
+	        "documents": [],
+	        "tags": []
+	    },
+	    {
+	        "id": 3,
+	        "title": "Математика",
+	        "image": "course-placeholder.png",
+	        "price": "0",
+	        "duration": "0",
+	        "annotation": "Обзорный курс по математике для подготовки школьников к ОГЭ/ЕГЭ",
+	        "description": null,
+	        "contents": null,
+	        "is_published": "1",
+	        "user": {
+	            "id": 2,
+	            "name": "Ворошилов Виктор Сергеевич",
+	            "email": "teacher_1@example.com",
+	            "phone": "+79001234501",
+	            "type": "teacher",
+	            "is_active": "1",
+	            "image": "avatar.png",
+	            "profile": null
+	        },
+	        "documents": [],
+	        "tags": []
+	    }
+	]
+
+9.	Информация о курсе
+	GET /api/courses/{id} (например, /api/courses/2)
+	parameters: none
+	return:
+	{
+	    "id": 2,
+	    "title": "Литература",
+	    "image": "course-placeholder.png",
+	    "price": "0",
+	    "duration": "0",
+	    "annotation": "Обзорный курс по литературе для подготовки школьников к ОГЭ/ЕГЭ",
+	    "description": null,
+	    "contents": null,
+	    "is_published": "1",
+	    "user": {
+	        "id": 3,
+	        "name": "Барышева Светлана Валентиновна",
+	        "email": "teacher_2@example.com",
+	        "phone": "+79001234502",
+	        "type": "teacher",
+	        "is_active": "1",
+	        "image": "8647a5bd48a70da9695583a309d54e13.jpg",
+	        "profile": null
+	    },
+	    "tags": [],
+	    "documents": []
+	}	
+
+10. Список тэгов (в том числе, названия предметов)
+	GET /api/tags
+	parameters: (TBD)is_persistent=1&offset=10&limit10
+	return:
+	[
+	    {
+	        "id": 1,
+	        "name": "Алгебра",
+	        "is_persistent": "1"
+	    },
+	    {
+	        "id": 2,
+	        "name": "Английский язык",
+	        "is_persistent": "1"
+	    },
+	    {
+	        "id": 3,
+	        "name": "Астрономия",
+	        "is_persistent": "1"
+	    },
+	    {
+	        "id": 34,
+	        "name": "Подготовка к ЕГЭ",
+	        "is_persistent": "0"
+	    }
+	]
+
+11.	Информация о таге
+	GET /api/tags/{id} (например, /api/tags/34)
+	parameters: none
+	return:
+	{
+	    "id": 34,
+	    "name": "Подготовка к ЕГЭ",
+	    "is_persistent": "0"
+	}
+
+Закрытое API, требуется авторизация (заголовок Authorization: Bearer ...)
+
+12. Профиль пользователя
+	GET /api/profile
+	parameters: none
+	return:
+
+	(для учителя)
+	{
+	    "user": {
+	        "id": 3,
+	        "type": "teacher",
+	        "email": "teacher_2@example.com",
+	        "phone": "+79001234502",
+	        "is_active": "1",
+	        "image": "8647a5bd48a70da9695583a309d54e13.jpg",
+	        "name": "Барышева Светлана Валентиновна"
+	    },
+	    "account": {},
+	    "documents": [],
+	    "courses": [
+	        {
+	            "id": 1,
+	            "title": "Русский язык",
+	            "image": "course-placeholder.png",
+	            "price": "0",
+	            "duration": "0",
+	            "annotation": "Обзорный курс по русскому языку для подготовки школьников к ОГЭ/ЕГЭ",
+	            "description": null,
+	            "contents": null,
+	            "is_published": "1"
+	        },
+	        {
+	            "id": 2,
+	            "title": "Литература",
+	            "image": "course-placeholder.png",
+	            "price": "0",
+	            "duration": "0",
+	            "annotation": "Обзорный курс по литературе для подготовки школьников к ОГЭ/ЕГЭ",
+	            "description": null,
+	            "contents": null,
+	            "is_published": "1"
+	        }
+	    ],
+	    "requests": [],
+	    "lessons": [],
+	    "tags": [],
+	    "owned_tags": [
+	        {
+	            "id": 34,
+	            "name": "Подготовка к ЕГЭ",
+	            "is_persistent": "0"
+	        }
+	    ]
+	}	
+
+	(для ученика)
+	{
+	    "user": {
+	        "id": 4,
+	        "type": "student",
+	        "email": "student@example.com",
+	        "phone": "+79003234500",
+	        "is_active": "1",
+	        "image": "avatar.png",
+	        "name": "Денежных Екатерина"
+	    },
+	    "account": {},
+	    "documents": [],
+	    "requests": [],
+	    "courses": [],
+	    "teachers": []
+	}
+
+13. Обновление профиля пользователя
+	PUT /api/profile
+	parameters:
+	{
+		"phone":"+79801234567",
+        "name":"Петров Иван",
+        "password":"secret",
+        "profile":{
+        	"experience":"xxx",
+        	"some-value":"sss"
+        }
+	}
+
+	Примечание: профиль принимается только у учителей (в остальных случаях игнорируется).
+
+	return:
+	{
+	    "user": {
+	        "id": 4,
+	        "type": "student",
+	        "email": "student@example.com",
+	        "phone": "+79003234500",
+	        "is_active": "1",
+	        "image": "avatar.png",
+	        "name": "Денежных Екатерина"
+	    },
+	    "account": {}
+	}	
+
+14. Изменение пользовательского аватара
+	POST /api/profile/image
+	parameters:	
+	{
+		"image":"файл изображения"
+	}
+	return: 
+	{
+	    "user": {
+	        "id": 4,
+	        "type": "student",
+	        "email": "student@example.com",
+	        "phone": "+79003234500",
+	        "is_active": "1",
+	        "image": "avatar.png",
+	        "name": "Денежных Екатерина"
+	    },
+	    "account": {}
+	}	
+
+15. Добавление тэга (учителям)
+	PUT /api/profile/tag/{id} (например /api/profile/tag/12)
+	parameters: none
+	return:
+	{
+	    "tags": [
+	        {
+	            "id": 12,
+	            "name": "Литература",
+	            "is_persistent": "1"
+	        },
+	        {
+	            "id": 23,
+	            "name": "Русский язык",
+	            "is_persistent": "1"
+	        }
+	    ]
+	}
+
+16. Удаление тэга (учителям)
+	DELETE /api/profile/tag/{id} (например /api/profile/tag/12)
+	parameters: none
+	return:
+	{
+	    "tags": [
+	        {
+	            "id": 23,
+	            "name": "Русский язык",
+	            "is_persistent": "1"
+	        }
+	    ]
+	}	
+    
+17. Создание курса (учителям)
+	POST /api/courses
+	parameters:
+	{
+        "title": "Русский язык для иностранцев",
+        "price": "100",
+        "duration": "120",
+        "annotation": "Обзорный курс по русскому языку для иностранных граждан",
+        "description": {
+        	"some-field":"some-value"
+        },
+        "contents": {
+        	"some-field":"some-value"
+        }
+ 	}
+	return:
+	{
+	    "title": "Русский язык для иностранцев",
+	    "price": 100,
+	    "duration": 120,
+	    "annotation": "Обзорный курс по русскому языку для иностранных граждан",
+	    "description": {
+	        "some-field": "some-value"
+	    },
+	    "contents": {
+	        "some-field": "some-value"
+	    },
+	    "is_published": true,
+	    "id": 4,
+	    "image": "course-placeholder.png"
+	}
+
+18. Редактирование курса (учителям)	
+	PUT /api/courses/{id} (например, /api/courses/4)
+	parameters: (см, создание курса)
+	return: (см, создание курса)
+
+19. Создание заявки (запись к учителю, для учеников)
+	POST /api/requests
+	parameters:
+	{
+	    "teacher_id": "4",
+    	"course_id": "2",
+    	"requested_date": "2020-03-05 12:00:00",
+	    "message": "Здравствуйте, хочу этот курс"
+ 	}
+ 	return:
+ 	{
+      "id": 1,
+      "user_id": "4",
+      "teacher_id": "4",
+      "course_id": "2",
+      "requested_date": "2020-03-05",
+      "is_seen": "0",
+      "is_answered": "0",
+      "is_approved": "0",
+      "message": "Здравствуйте, хочу этот курс"
+    }
+
+    Полe requested_date отображается в календаре ученика/учителя как заявка на занятие.
+    Статус заявки надо отобразить цветом/тултипом (отдельно в календаре отображаются и 
+    запланированные/проведенные занятия)
+
+20. Обновление заявки 
+	PUT /api/requests/{id} (например, /api/requests/1)
+	parameters:
+	{
+	    "message": "Здравствуйте, хочу этот курс",
+	    "response": "Хорошо, я Вас запишу"
+ 	}
+ 	return:
+ 	{
+	  "id": 1,
+	  "user_id": "4",
+	  "teacher_id": "4",
+	  "course_id": "2",
+	  "requested_date": "2020-03-05 12:00:00",
+	  "is_seen": 1,
+	  "is_answered": 1,
+	  "is_approved": "0",
+	  "message": "Здравствуйте, хочу этот курс",
+	  "response": "Хорошо, я Вас запишу",
+	  "user": {
+	    "id": 4,
+	    "type": "student",
+	    "email": "student@example.com",
+	    "phone": "+79003234500",
+	    "is_active": "1",
+	    "image": "avatar.png",
+	    "name": "Денежных Екатерина"
+	  },
+	  "teacher": {
+	    "id": 3,
+	    "type": "teacher",
+	    "email": "teacher_2@example.com",
+	    "phone": "+79001234502",
+	    "is_active": "1",
+	    "image": "avatar.png",
+	    "name": "Барышева Светлана Валентиновна"
+	  },
+	  "course": {
+	    "id": 2,
+	    "title": "Литература",
+	    "image": "course-placeholder.png",
+	    "price": "0",
+	    "duration": "0",
+	    "annotation": "Обзорный курс по литературе для подготовки школьников к ОГЭ/ЕГЭ",
+	    "description": null,
+	    "contents": null,
+	    "is_published": "1"
+	  }
+	}
+
+    Примечания:
+    - для учеников используется только message
+    - для учителей используется только response, is_seen/is_answered обновляются
+
+21. Одобрение заявки (учителем)
+	PUT /api/requests/{id}/approve (например, /api/requests/1/approve)
+	parameters:
+	{
+	    "response": "Хорошо, я Вас запишу"
+ 	}
+ 	return:
+ 	см. п.20
+
+    Примечаниe:
+    - параметр response опциональный, is_seen/is_answered обновляются
+
+22. Получить список заявок
+	GET /api/requests
+	parameters: offset=0&limit=10
+	return:
+	[
+	 	{
+		  "id": 1,
+		  "user_id": "4",
+		  "teacher_id": "4",
+		  "course_id": "2",
+		  "requested_date": "2020-03-05 12:00:00",
+		  "is_seen": 1,
+		  "is_answered": 1,
+		  "is_approved": "0",
+		  "message": "Здравствуйте, хочу этот курс",
+		  "response": "Хорошо, я Вас запишу",
+		  "user": {
+		    "id": 4,
+		    "type": "student",
+		    "email": "student@example.com",
+		    "phone": "+79003234500",
+		    "is_active": "1",
+		    "image": "avatar.png",
+		    "name": "Денежных Екатерина"
+		  },
+		  "teacher": {
+		    "id": 3,
+		    "type": "teacher",
+		    "email": "teacher_2@example.com",
+		    "phone": "+79001234502",
+		    "is_active": "1",
+		    "image": "avatar.png",
+		    "name": "Барышева Светлана Валентиновна"
+		  },
+		  "course": {
+		    "id": 2,
+		    "title": "Литература",
+		    "image": "course-placeholder.png",
+		    "price": "0",
+		    "duration": "0",
+		    "annotation": "Обзорный курс по литературе для подготовки школьников к ОГЭ/ЕГЭ",
+		    "description": null,
+		    "contents": null,
+		    "is_published": "1"
+		  }
+		}
+	]
+
+23. Получить информацию о заявке
+	GET /api/requests/{id} (например, /api/requests/1)
+	parameters: none
+	return:
+ 	см. п.20
+
+    Примечание:
+    - для учителей is_seen обновляется
+
+TBD.
+
+Примечения:
+1. Доступ к изображениям пользователей определяется как /avatars/{avatar_name}, например, /avatars/avatar.png.
+2. Доступ к изображениям курса определяется как /courses/{course_image_name}
+3. Поле profile (информация о пользователе) имеет тип JSON и не определено явно.
+4. Поля description и contents курса имеют тип JSON и не определены явно
+5. Текущий адрес сервера http://84.201.140.109/ (использовать как http://api.vsemoeobrazovanie.ru)
+6. Для всех списочных запросов работают параметры offset/limit
+

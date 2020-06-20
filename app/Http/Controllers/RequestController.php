@@ -2,18 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\Course;
 use App\PurchaseStatus;
 use App\User;
 use Auth;
 use App\Request as AppRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RequestController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function list(Request $request)
@@ -25,9 +27,9 @@ class RequestController extends Controller
             ->where($user_selector, $user->id);
 
         $requests = $this->applyOffsetAndLimit($request, $query)
-            ->latest()
+            ->latest(10)
             ->get()
-            ->map(function ($r) { 
+            ->map(function ($r) {
                 return $r->toResponse();
             });
 
@@ -37,17 +39,18 @@ class RequestController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
+
         $user_request = AppRequest::findOrFail($id);
         $user = Auth::user();
         $this->validateOwnership($user, $user_request);
         $user_request->load('user', 'teacher', 'course', 'purchase');
 
-        if(!$user_request->is_seen && $user->id == $user_request->teacher_id) {
+        if (!$user_request->is_seen && $user->id == $user_request->teacher_id) {
             $user_request->is_seen = 1;
             $user_request->save();
         }
@@ -58,13 +61,13 @@ class RequestController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
     public function create(Request $request)
     {
         $user = Auth::user();
-        if($user->type != 'student') {
+        if ($user->type != 'student') {
             throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
         }
 
@@ -87,8 +90,8 @@ class RequestController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -103,7 +106,7 @@ class RequestController extends Controller
         ]);
 
         $user_request->load('user', 'teacher', 'course');
-        if($user->id == $user_request->user_id) {
+        if ($user->id == $user_request->user_id) {
             unset($validated['response']);
         } else {
             unset($validated['message']);
@@ -120,14 +123,14 @@ class RequestController extends Controller
         $user_request = AppRequest::findOrFail($id);
         $user = Auth::user();
 
-        if($user->id != $user_request->teacher_id) {
+        if ($user->id != $user_request->teacher_id) {
             throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
         }
 
         $user_request->load('user', 'teacher', 'course');
         $user_request->is_approved = 1;
         $user_request->is_answered = 1;
-        if($request->filled('response')) {
+        if ($request->filled('response')) {
             $user_request->response = $request->input('response');
         }
         return response()->json($user_request->toResponse());
@@ -136,20 +139,29 @@ class RequestController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function delete($id)
     {
+
+        if(DB::table('requests')->where('id', '=', $id)->delete())
+        {
+            return response()->json([
+                'code' => 200,
+                'message' => 'Deleted',
+            ], 501);
+        }
+
         return response()->json([
             'error_code' => 501,
             'error_message' => 'Not implemented',
         ], 501);
     }
 
-    private function validateOwnership($auth_user, $user_request) 
+    private function validateOwnership($auth_user, $user_request)
     {
-        if ($auth_user->id != $user_request->user_id && 
+        if ($auth_user->id != $user_request->user_id &&
             $auth_user->id != $user_request->teacher_id) {
             throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
         }

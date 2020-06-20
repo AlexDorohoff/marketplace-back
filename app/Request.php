@@ -40,13 +40,12 @@ class Request extends Model
         $response = [
             'id' => $this->id,
             'user_id' => $this->user_id,
-            'teacher_id' => $this->user_id,
+            'teacher_id' => $this->teacher_id,
             'course_id' => $this->course_id,
             'requested_date' => $this->requested_date,
             'is_seen' => $this->is_seen,
             'is_answered' => $this->is_answered,
             'is_approved' => $this->is_approved,
-            'purchase_status' => $this->getStatus($this->id_purchase_status),
         ];
 
         if ($this->message) {
@@ -93,14 +92,7 @@ class Request extends Model
 
     public function purchase()
     {
-        return $this->hasOne('App\PurchaseStatus', 'id');
-    }
-
-    public function getStatus($id)  //костыль
-    {
-        $purchase = new PurchaseStatus();
-        $label = $purchase::find($id);
-        return $label->label;
+        return $this->hasOne('App\PurchaseStatus', 'id', 'id_purchase_status');
     }
 
 }

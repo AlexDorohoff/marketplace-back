@@ -26,6 +26,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('/tags/{id}', 'TagController@show');
 
     $router->get('/purchase', 'PurchaseStatusController@list');
+
+    $router->get('/category', 'CategoryController@list');
+
 });
 
 $router->group(['prefix' => 'api', 'middleware' => 'client'], function () use ($router) {

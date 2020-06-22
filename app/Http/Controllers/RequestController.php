@@ -79,7 +79,9 @@ class RequestController extends Controller
         ]);
 
         $validated['user_id'] = $user->id;
-
+        if (!empty($request['purchase_status'])) {
+            $validated['purchase_status'] = 1;
+        }
         $new_request = AppRequest::create($validated);
         $new_request->save();
         $new_request->refresh();
@@ -145,18 +147,19 @@ class RequestController extends Controller
     public function delete($id)
     {
 
-        if(DB::table('requests')->where('id', '=', $id)->delete())
-        {
-            return response()->json([
-                'code' => 200,
-                'message' => 'Deleted',
-            ], 501);
+        $user_request = AppRequest::findOrFail($id);
+        $user = Auth::user();
+
+        if ($user->id != $user_request->teacher_id) {
+            throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
         }
 
+        $user_request->delete();
         return response()->json([
-            'error_code' => 501,
-            'error_message' => 'Not implemented',
+            'code' => 200,
+            'message' => 'Deleted',
         ], 501);
+
     }
 
     private function validateOwnership($auth_user, $user_request)

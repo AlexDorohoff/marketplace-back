@@ -17,7 +17,12 @@ class CategoryController extends Controller
     public function show($id)
     {
         $category = Category::findOrFail($id);
-
         return response()->json($category);
+    }
+
+    public function getByCourseId($course_id)//искать по товару
+    {
+        $course = Course::find($course_id);
+        return response()->json($course->category);
     }
 }

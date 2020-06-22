@@ -24,10 +24,12 @@ $router->group(['prefix' => 'api'], function () use ($router) {
 
     $router->get('/tags', 'TagController@list');
     $router->get('/tags/{id}', 'TagController@show');
-
+//временно и без авторизации
     $router->get('/purchase', 'PurchaseStatusController@list');
 
     $router->get('/category', 'CategoryController@list');
+    $router->get('/category/{id}', 'CategoryController@show');
+    $router->get('/category/course/{id}', 'CategoryController@getByCourseId');
 
 });
 

@@ -8,14 +8,15 @@ class Category extends Model
 {
     protected $table = 'category';
 
-    public function teachers()
-    {
-        return $this->belongsToMany('App\Teacher', 'category_x_teacher');
-    }
-
     public function courses()
     {
         return $this->belongsToMany('App\Course', 'category_x_course');
+    }
+
+    public function teachers()
+    {
+        return $this->belongsToMany(User::class);
+
     }
 
 }

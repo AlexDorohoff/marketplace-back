@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCategoryXTeacherTable extends Migration
+class CreateCategoryXUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateCategoryXTeacherTable extends Migration
      */
     public function up()
     {
-        Schema::create('category_x_teacher', function (Blueprint $table) {
+        Schema::create('category_user', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('category_id');
-            $table->unsignedInteger('teacher_id');
+            $table->unsignedInteger('user_id');
             $table->foreign('category_id')->references('id')->on('category');
-            $table->foreign('teacher_id')->references('id')->on('teacher');
+            $table->foreign('user_id')->references('id')->on('user');
             $table->unique(['category_id', 'teacher_id']);
         });
     }

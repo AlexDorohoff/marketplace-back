@@ -30,6 +30,9 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('/category', 'CategoryController@list');
     $router->get('/category/{id}', 'CategoryController@show');
     $router->get('/category/course/{id}', 'CategoryController@getByCourseId');
+    $router->get('/category/teacher/{id}', 'CategoryController@getByTeacherId');
+
+    $router->get('/document/user', 'DocumentController@getByUser');
 
 });
 

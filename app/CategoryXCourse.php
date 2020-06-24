@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class CategoryXCourse extends Model
 {
-    protected $table = 'category';
+    protected $table = 'category_x_course';
 
     public function course()
     {

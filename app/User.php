@@ -25,12 +25,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         'profile' => 'array'
     ];
 
-    public function isAdministrativeUser() 
+    public function isAdministrativeUser()
     {
         return ($this->type === 'admin' || $this->type === 'manager');
     }
 
-    public function hasOwnership($user_id) 
+    public function hasOwnership($user_id)
     {
         return $this->id == $user_id || $this->isAdministrativeUser();
     }
@@ -47,7 +47,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'name' => $this->name
         ];
 
-        if($this->profile) {
+        if ($this->profile) {
             $response['profile'] = $this->profile;
         }
 
@@ -87,5 +87,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function requests()
     {
         return $this->hasMany('App\Request');
+    }
+
+    public function categories()
+    {
+        return $this->belongsToMany(Category::class);
+
     }
 }

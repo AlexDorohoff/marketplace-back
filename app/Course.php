@@ -34,7 +34,8 @@ class Course extends Model
         return $this->morphToMany('App\Tag', 'taggable');
     }
 
-    public function category(){
+    public function category()
+    {
         return $this->belongsToMany('App\Category', 'category_x_course');
     }
 }

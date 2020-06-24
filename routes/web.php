@@ -33,6 +33,7 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('/category/teacher/{id}', 'CategoryController@getByTeacherId');
 
     $router->get('/document/user', 'DocumentController@getByUser');
+    $router->post('/document/user', 'DocumentController@loadImage');
 
 });
 

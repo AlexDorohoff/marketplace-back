@@ -55,6 +55,8 @@ class DocumentController extends Controller
 
     public function loadImage(Request $request)
     {
+        $user = Auth::user();
+        return $user->id;
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             $file->move(public_path() . '/path', 'filename.img');

@@ -18,4 +18,9 @@ class Document extends Model
     {
         return $this->morphToMany('App\Tag', 'taggable');
     }
+
+    public function images()
+    {
+        return $this->belongsToMany('App\Image');
+    }
 }

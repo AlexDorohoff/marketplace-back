@@ -2,25 +2,24 @@
 
 namespace App\Http\Controllers;
 
-use App\Document;
-use App\User;
+use App\Image;
 use Illuminate\Http\Request;
-use Auth;
+use test\Mockery\Stubs\Animal;
 
-class DocumentController extends Controller
+class ImageController extends Controller
 {
 
-    //добавить проверки на пренодлежность пользователю
+    //добавить проверки на пренодлкжность пользователю
 
     public function list(Request $request)
     {
-        return response()->json(Document::all());
+        return response()->json(Image::all());
     }
 
     public function show($id)
     {
         return response()
-            ->json(Document::findOrFail($id));
+            ->json(Image::findOrFail($id));
     }
 
     public function create(Request $request)
@@ -32,19 +31,22 @@ class DocumentController extends Controller
         $validated = $this->validate($request, [
             'name' => 'required|max:255',
             'description' => 'required|max:255',
-            'course_id' => 'required|integer',
         ]);
 
-        //$validated['user_id'] = Auth::user()->id;
-        $validated['user_id'] = 3;
-        $validated['is_public'] = false;
+        $path = $this->uploadImage($request);
+        if ($path) {
 
-        $document = Document::create($validated);
+            $validated['path'] = $path;
+            //$validated['user_id'] = Auth::user()->id;
+            $validated["user_id"] = 3;
+            $validated['is_public'] = false;
 
-        $document->save();
-        $document->refresh();
+            $image = Image::create($validated);
 
-        return response()->json($document);
+            $image->save();
+            $image->refresh();
+            return response()->json($image);
+        }
     }
 
     public function update($id, Request $request)
@@ -66,26 +68,20 @@ class DocumentController extends Controller
     public function getByUser()
     {
         $user = Auth::user();
-        return response()->json($user);
         if ($user->type == 'teacher') {
-            return response()->json($user->documents);
+            return response()->json($user->images);
         }
     }
 
-    public function loadImage(Request $request)
+    public function uploadImage(Request $request)
     {
         if ($request->hasFile('image')) {
             $file = $request->file('image');
             if (in_array($file->extension(), ['jpg', 'jpeg', 'png', 'pdf', 'gif'])) {
-                $url = '/path/'. $file->hashName();
+                $url = '/path/' . $file->hashName();
                 $file->move(public_path() . '/path', $file->hashName());
-
+                return $url;
             }
         }
-    }
-
-    public function getFileName()
-    {
-
     }
 }

@@ -33,7 +33,15 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('/category/teacher/{id}', 'CategoryController@getByTeacherId');
 
     $router->get('/document/user', 'DocumentController@getByUser');
-    $router->post('/document/user', 'DocumentController@loadImage');
+    $router->post('/document/image', 'DocumentController@loadImage');
+    $router->post('/documents', 'DocumentController@create');
+    $router->put('/documents/{id}', 'DocumentController@update');
+    $router->delete('/documents/{id}', 'DocumentController@delete');
+
+    $router->get('/images', 'ImageController@list');
+    $router->get('/images/{id}', 'ImageController@show');
+    $router->post('/images', 'ImageController@create');
+    //$router->post('/images', 'ImageController@loadImage');
 
 });
 
@@ -55,9 +63,7 @@ $router->group(['prefix' => 'api', 'middleware' => 'client'], function () use ($
     $router->put('/tags/{id}', 'TagController@update'); 
     $router->delete('/tags/{id}', 'TagController@delete'); 
 
-    $router->post('/documents', 'DocumentController@create'); 
-    $router->put('/documents/{id}', 'DocumentController@update'); 
-    $router->delete('/documents/{id}', 'DocumentController@delete'); 
+
 
     $router->get('/requests', 'RequestController@list'); 
     $router->get('/requests/{id}', 'RequestController@show'); 

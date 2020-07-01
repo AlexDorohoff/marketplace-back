@@ -597,3 +597,22 @@ TBD.
 5. Текущий адрес сервера http://84.201.140.109/ (использовать как http://api.vsemoeobrazovanie.ru)
 6. Для всех списочных запросов работают параметры offset/limit
 
+____________________________________________________________________________________________________________________
+
+    $router->get('/category', 'CategoryController@list'); // получить все категории // позже закроем
+    $router->get('/category/{id}', 'CategoryController@show'); // получить конкретную категорию по id
+    $router->get('/category/course/{id}', 'CategoryController@getByCourseId'); // получить категорию товара по id товара
+    $router->get('/category/teacher/{id}', 'CategoryController@getByTeacherId'); // получить все категории продавца по id продавца
+
+    $router->get('/documents', 'DocumentController@getByUser'); //все документы текущего пользователя
+    $router->post('/documents', 'DocumentController@create'); // создать документ, описание есть выше
+    $router->put('/documents/{id}', 'DocumentController@update'); //обновить документ, описание выше
+    $router->delete('/documents/{id}', 'DocumentController@delete'); // удалить документ, описание есть выше
+
+    $router->get('/images', 'ImageController@list'); //все картинки пользователя
+    $router->get('/images/{id}', 'ImageController@show'); // конкретная картинка по id артинки
+    $router->post('/images', 'ImageController@create'); // создание картинки
+    $router->put('/images', 'ImageController@update'); // обновление картинки
+    $router->delete('/images/{id}', 'ImageController@delete'); // удаление картинки
+
+    $router->delete('/requests/{id}', 'RequestController@delete'); // отмена покупки

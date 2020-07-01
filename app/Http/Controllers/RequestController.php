@@ -27,7 +27,7 @@ class RequestController extends Controller
             ->where($user_selector, $user->id);
 
         $requests = $this->applyOffsetAndLimit($request, $query)
-            ->latest(10)
+            ->latest()
             ->get()
             ->map(function ($r) {
                 return $r->toResponse();
@@ -150,7 +150,7 @@ class RequestController extends Controller
         $user_request = AppRequest::findOrFail($id);
         $user = Auth::user();
 
-        if ($user->id != $user_request->teacher_id) {
+        if ($user->id != $user_request->user_id || $user->id != $user_request->teacher_id) {
             throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
         }
 

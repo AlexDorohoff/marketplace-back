@@ -57,35 +57,31 @@ class DocumentController extends Controller
 
     public function delete($id)
     {
+        $document = Document::findOrFail($id);
+
+        if (!Auth::user()->hasOwnership($document->user_id)) {
+            throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
+        }
+
+        if (!$document->delete()) {
+            return response()->json([
+                'error_code' => 501,
+                'error_message' => 'Not delete',
+            ], 501);
+        }
+
         return response()->json([
-            'error_code' => 501,
-            'error_message' => 'Not implemented',
-        ], 501);
+            'error_code' => 200,
+            'error_message' => 'deleted',
+        ], 200);
     }
 
     public function getByUser()
     {
         $user = Auth::user();
-        return response()->json($user);
-        if ($user->type == 'teacher') {
-            return response()->json($user->documents);
+        if (!$user->type == 'teacher') {
+            throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
         }
-    }
-
-    public function loadImage(Request $request)
-    {
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            if (in_array($file->extension(), ['jpg', 'jpeg', 'png', 'pdf', 'gif'])) {
-                $url = '/path/'. $file->hashName();
-                $file->move(public_path() . '/path', $file->hashName());
-
-            }
-        }
-    }
-
-    public function getFileName()
-    {
-
+        return response()->json($user->documents);
     }
 }

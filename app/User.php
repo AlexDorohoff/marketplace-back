@@ -97,6 +97,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function images()
     {
         return $this->belongsToMany(Image::class);
+    }
 
+    public function access()
+    {
+        return $this->belongsToMany(ImageAccessList::class);
     }
 }

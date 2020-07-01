@@ -19,12 +19,11 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('/courses', 'CourseController@list');
     $router->get('/courses/{id}', 'CourseController@show');
 
-    $router->get('/documents', 'DocumentController@list'); 
-    $router->get('/documents/{id}', 'DocumentController@show'); 
 
     $router->get('/tags', 'TagController@list');
     $router->get('/tags/{id}', 'TagController@show');
 //временно и без авторизации
+
     $router->get('/purchase', 'PurchaseStatusController@list');
 
     $router->get('/category', 'CategoryController@list');
@@ -32,16 +31,19 @@ $router->group(['prefix' => 'api'], function () use ($router) {
     $router->get('/category/course/{id}', 'CategoryController@getByCourseId');
     $router->get('/category/teacher/{id}', 'CategoryController@getByTeacherId');
 
-    $router->get('/document/user', 'DocumentController@getByUser');
-    $router->post('/document/image', 'DocumentController@loadImage');
+    $router->get('/documents', 'DocumentController@getByUser');
     $router->post('/documents', 'DocumentController@create');
     $router->put('/documents/{id}', 'DocumentController@update');
     $router->delete('/documents/{id}', 'DocumentController@delete');
+    //$router->get('/documents', 'DocumentController@list');
+    $router->get('/documents/{id}', 'DocumentController@show');
+
 
     $router->get('/images', 'ImageController@list');
     $router->get('/images/{id}', 'ImageController@show');
     $router->post('/images', 'ImageController@create');
-    //$router->post('/images', 'ImageController@loadImage');
+    $router->put('/images', 'ImageController@update');
+    $router->delete('/images/{id}', 'ImageController@delete');
 
 });
 
@@ -62,7 +64,6 @@ $router->group(['prefix' => 'api', 'middleware' => 'client'], function () use ($
     $router->post('/tags', 'TagController@create'); 
     $router->put('/tags/{id}', 'TagController@update'); 
     $router->delete('/tags/{id}', 'TagController@delete'); 
-
 
 
     $router->get('/requests', 'RequestController@list'); 

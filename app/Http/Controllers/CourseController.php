@@ -23,7 +23,7 @@ class CourseController extends Controller
         // and (title like 'abcde%') 
         // and (id in select link_id from tag_links where tag_id in (tag_ids) and reference_type = 'courses')
         $query = Course::where('is_published', true)
-            ->with(['user', 'documents', 'tags']);
+            ->with(['user', 'documents', 'tags', 'category']);
 
         $courses = $this->applyOffsetAndLimit($request, $query)
             ->get();

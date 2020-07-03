@@ -25,9 +25,9 @@ class ImageController extends Controller
 
     public function create(Request $request)
     {
-        /*if(Auth::user()->type !== 'teacher') {
+        if(Auth::user()->type !== 'teacher') {
             throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
-        }*/
+        }
 
         $validated = $this->validate($request, [
             'name' => 'required|max:255',
@@ -38,8 +38,7 @@ class ImageController extends Controller
         if ($path) {
 
             $validated['path'] = $path;
-            //$validated['user_id'] = Auth::user()->id;
-            $validated["user_id"] = 3;
+            $validated['user_id'] = Auth::user()->id;
             $validated['is_public'] = false;
 
             $image = Image::create($validated);
@@ -53,9 +52,9 @@ class ImageController extends Controller
     public function update($id, Request $request)
     {
         $image = Image::findOrFail($id);
-        //if(!Auth::user()->hasOwnership($image->user_id)) {
-        //    throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
-        //}
+        if(!Auth::user()->hasOwnership($image->user_id)) {
+            throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
+        }
 
         $validated = $this->validate($request, [
             'name' => 'required|max:255',

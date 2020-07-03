@@ -603,6 +603,7 @@ ________________________________________________________________________________
     $router->get('/category/{id}', 'CategoryController@show'); // получить конкретную категорию по id
     $router->get('/category/course/{id}', 'CategoryController@getByCourseId'); // получить категорию товара по id товара
     $router->get('/category/teacher/{id}', 'CategoryController@getByTeacherId'); // получить все категории продавца по id продавца
+    $router->get('/category/category/{id}', 'CategoryController@etCoursesByCategoryId');
 
     $router->get('/documents', 'DocumentController@getByUser'); //все документы текущего пользователя
     $router->post('/documents', 'DocumentController@create'); // создать документ, описание есть выше

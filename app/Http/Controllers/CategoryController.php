@@ -38,4 +38,14 @@ class CategoryController extends Controller
         }
         throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
     }
+
+    public function getCoursesByCategoryId($category_id)//искать по продавцу
+    {
+        $category = Category::find($category_id);
+
+
+        return response()->json($category->courses);
+
+        throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
+    }
 }

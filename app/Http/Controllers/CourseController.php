@@ -37,7 +37,7 @@ class CourseController extends Controller
         if(!$course->is_published && !Auth::user()->hasOwnership($course->user_id)) {
             throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
         }
-        $course->load('user', 'tags', 'documents');
+        $course->load('user', 'tags', 'documents', 'category');
         return response()->json($course);
     }
 

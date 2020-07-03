@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddColumnCategoryTable extends Migration
+class UpdateCourseTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddColumnCategoryTable extends Migration
      */
     public function up()
     {
-        Schema::table('category', function (Blueprint $table) {
-            $table->string('parent_id')->nullable()->default(null);
+        Schema::table('courses', function (Blueprint $table) {
+            $table->unsignedInteger('category_id')->default(0);
         });
     }
 
@@ -25,6 +25,6 @@ class AddColumnCategoryTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('category');
+        //
     }
 }

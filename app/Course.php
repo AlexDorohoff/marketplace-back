@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Course extends Model
 {
@@ -36,6 +37,7 @@ class Course extends Model
 
     public function category()
     {
-        return $this->hasOne('App\CategoryCourse','category_id')->with('category');
+        return $this->belongsTo('App\Category');
+
     }
 }

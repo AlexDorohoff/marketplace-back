@@ -11,7 +11,7 @@ class TeacherController extends Controller
 {
 	public function list(Request $request)
 	{
-        $query = User::with('courses', 'tags')
+        $query = User::with('courses', 'tags', 'categories')
             ->where('is_active', 1)
             ->where('type', 'teacher');
 

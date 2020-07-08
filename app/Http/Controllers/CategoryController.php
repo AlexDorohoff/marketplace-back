@@ -42,10 +42,27 @@ class CategoryController extends Controller
     public function getCoursesByCategoryId($category_id)//искать по продавцу
     {
         $category = Category::find($category_id);
-
-
         return response()->json($category->courses);
 
         throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
+    }
+
+    public function getParentCategories()
+    {
+        $query = Category::All()
+            ->where('parent', '=', null);
+        return response()->json($query);
+    }
+
+    public function getCategoryForCourse($id)
+    {
+        //$user = Auth::user();
+        //if ($user->type == 'teacher') {
+        $query = Category::with('teachers')
+            ->where('parent_id', '=', null)->get();
+            //->where('user_id', '=', 2)->get();
+        return response()->json($query);
+        //}
+        //throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
     }
 }

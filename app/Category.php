@@ -15,12 +15,11 @@ class Category extends Model
 
     public function teachers()
     {
-        return $this->belongsToMany(User::class);
-
+        return $this->belongsToMany(User::class)->where('type', '==', 'teacher');
     }
 
     public function parent(){
-        return $this->belongsTo('App\Category', 'parent', 'id');
+        return $this->belongsTo('App\Category', 'parent_id', 'id');
     }
 
 }

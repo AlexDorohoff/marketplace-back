@@ -13,7 +13,7 @@ class CategoryController extends Controller
 {
     public function list(Request $request)
     {
-        $query = Category::with('children')->get();
+        $query = Category::with('children')->where('parent_id','=', null)->get();
         return response()->json($query);
     }
 

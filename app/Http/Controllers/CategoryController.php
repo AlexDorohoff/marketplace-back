@@ -13,7 +13,7 @@ class CategoryController extends Controller
 {
     public function list(Request $request)
     {
-        $query = Category::All();
+        $query = Category::with('children')->get();
         return response()->json($query);
     }
 
@@ -60,7 +60,7 @@ class CategoryController extends Controller
         //if ($user->type == 'teacher') {
         $query = Category::with('teachers')
             ->where('parent_id', '=', null)->get();
-            //->where('user_id', '=', 2)->get();
+        //->where('user_id', '=', 2)->get();
         return response()->json($query);
         //}
         //throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');

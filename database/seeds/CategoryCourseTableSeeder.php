@@ -13,12 +13,10 @@ class CategoryCourseTableSeeder extends Seeder
     public function run()
     {
         DB::table('category_course')->insert([
-            'id' => 0,
-            'course_id' => 4,
+            'course_id' => 3,
             'category_id' => 1,
         ]);
         DB::table('category_course')->insert([
-            'id' => 1,
             'course_id' => 1,
             'category_id' => 1,
         ]);

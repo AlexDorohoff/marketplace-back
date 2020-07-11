@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCategoryUserTable extends Migration
+class CreateCategoryCoursesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateCategoryUserTable extends Migration
      */
     public function up()
     {
-        Schema::dropIfExists('category_user');
+        Schema::dropIfExists('category_course');
 
-        Schema::create('category_user', function (Blueprint $table) {
+        Schema::create('category_course', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('category_id');
-            $table->unsignedInteger('user_id');
+            $table->unsignedInteger('course_id');
             $table->foreign('category_id')->references('id')->on('category');
-            $table->foreign('user_id')->references('id')->on('user');
-            $table->unique(['category_id', 'teacher_id']);
+            $table->foreign('course_id')->references('id')->on('course');
+            $table->unique(['course_id']);
         });
     }
 
@@ -32,6 +32,6 @@ class CreateCategoryUserTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('category_x_teacher');
+        Schema::dropIfExists('category_courses');
     }
 }

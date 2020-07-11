@@ -20,5 +20,20 @@ class AddCategoriesUserTableSeeder extends Seeder
             'category_id' => 7,
             'user_id' => 2,
         ]);
+
+        DB::table('category_user')->insert([
+            'category_id' => 1,
+            'user_id' => 3,
+        ]);
+
+        DB::table('category_user')->insert([
+            'category_id' => 7,
+            'user_id' => 3,
+        ]);
+
+        DB::table('category_user')->insert([
+            'category_id' => 13,
+            'user_id' => 3,
+        ]);
     }
 }

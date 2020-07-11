@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateCategoryXUserTable extends Migration
+class CreateCategoryUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,6 +13,8 @@ class CreateCategoryXUserTable extends Migration
      */
     public function up()
     {
+        Schema::dropIfExists('category_user');
+
         Schema::create('category_user', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->unsignedInteger('category_id');

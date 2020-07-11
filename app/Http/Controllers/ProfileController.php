@@ -20,6 +20,7 @@ class ProfileController extends Controller
             'user' => $user->toResponse(),
             'account' => $user->account,
             'documents' => $user->documents,
+            'categories' => $user->categories,
         ];
         if ($user->type === 'teacher') {
             $response['courses'] = $user->courses;

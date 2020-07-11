@@ -27,7 +27,7 @@ class TeacherController extends Controller
         if(!$teacher->is_active || $teacher->type !== 'teacher') {
             throw new \Illuminate\Database\Eloquent\ModelNotFoundException('Specified teacher not found');
         }
-        $teacher->load('courses', 'tags');
+        $teacher = $teacher::with('categories')->get();
         return response()->json($teacher);
     }
 }

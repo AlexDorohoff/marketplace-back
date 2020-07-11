@@ -12,28 +12,25 @@ class AddCategoriesTableSeeder extends Seeder
     public function run()
     {
 
-        $i = 0;
-        while ($i < 45) {
+        $i = 1;
+        while ($i < 15) {
             DB::table('category')->insert([
-                'id' => $i,
-                'name' => 'категория 2',
+                'name' => 'категория ' . $i,
                 'parent_id' => null,
             ]);
-            $i = $this->insertChild($i);
+            $this->insertChild($i);
+            $i++;
         }
     }
 
     public function insertChild($parent_id)
     {
         for ($j = 1; $j <= 5; $j++) {
-            $id = $parent_id + $j;
             DB::table('category')->insert([
-                'id' => $id,
-                'name' => $j . ' подкатегория категории' . $parent_id,
+                'name' => $j . ' подкатегория категории ' . $parent_id,
                 'parent_id' => $parent_id,
             ]);
         }
-        return ++$id;
     }
 
     public function down()

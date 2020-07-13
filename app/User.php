@@ -44,7 +44,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             'phone' => $this->phone,
             'is_active' => $this->is_active,
             'image' => $this->image,
-            'name' => $this->name
+            'name' => $this->name,
+            'categories' => $this->categories,
         ];
 
         if ($this->profile) {

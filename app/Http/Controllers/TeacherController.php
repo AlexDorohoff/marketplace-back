@@ -9,8 +9,8 @@ use Illuminate\Http\Request;
 
 class TeacherController extends Controller
 {
-	public function list(Request $request)
-	{
+    public function list(Request $request)
+    {
         $query = User::with('courses', 'tags', 'categories')
             ->where('is_active', 1)
             ->where('type', 'teacher');
@@ -19,15 +19,15 @@ class TeacherController extends Controller
             ->get();
 
         return response()->json($teachers);
-	}
+    }
 
-    public function show($id) 
+    public function show($id)
     {
         $teacher = User::findOrFail($id);
-        if(!$teacher->is_active || $teacher->type !== 'teacher') {
+
+        if (!$teacher->is_active || $teacher->type !== 'teacher') {
             throw new \Illuminate\Database\Eloquent\ModelNotFoundException('Specified teacher not found');
         }
-        $teacher = $teacher::with('categories')->get();
-        return response()->json($teacher);
+        return response()->json($teacher->toResponse());
     }
 }

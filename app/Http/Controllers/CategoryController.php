@@ -65,4 +65,12 @@ class CategoryController extends Controller
         //}
         //throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
     }
+
+    public function getItemsByCategory($id)
+    {
+        $query = Category::with('courses', 'teachers')
+            ->where('id', $id)
+            ->get();
+        return response()->json($query);
+    }
 }

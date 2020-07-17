@@ -46,6 +46,7 @@ class Request extends Model
             'is_seen' => $this->is_seen,
             'is_answered' => $this->is_answered,
             'is_approved' => $this->is_approved,
+            'purchase' => $this->purchase
         ];
 
         if ($this->message) {
@@ -94,5 +95,4 @@ class Request extends Model
     {
         return $this->hasOne('App\PurchaseStatus', 'id', 'id_purchase_status');
     }
-
 }

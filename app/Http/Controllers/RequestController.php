@@ -3,12 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Course;
-use App\PurchaseStatus;
 use App\User;
 use Auth;
 use App\Request as AppRequest;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 
 class RequestController extends Controller
 {
@@ -70,21 +68,21 @@ class RequestController extends Controller
         if ($user->type != 'student') {
             throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
         }
-
         $validated = $this->validate($request, [
             'teacher_id' => 'required|exists:users,id',
             'course_id' => 'required|exists:courses,id',
             'requested_date' => 'required|date',
             'message' => 'max:255',
+            'id_purchase_status' => 'required|integer',
         ]);
 
         $validated['user_id'] = $user->id;
-        if (!empty($request['purchase_status'])) {
-            $validated['purchase_status'] = 1;
-        }
+
         $new_request = AppRequest::create($validated);
+
         $new_request->save();
         $new_request->refresh();
+
 
         return response()->json($new_request->toResponse());
     }

@@ -100,12 +100,21 @@ class RequestController extends Controller
         $user = Auth::user();
 
         $this->validateOwnership($user, $user_request);
-        $validated = $this->validate($request, [
-            'message' => 'max:255',
-            'response' => 'max:255',
-        ]);
 
-        $user_request->load('user', 'teacher', 'course');
+
+
+        $validated = $this->validate($request,[
+            'teacher_id' => 'required|exists:users,id',
+            'course_id' => 'required|exists:courses,id',
+            'requested_date' => 'required|date',
+            'message' => 'max:255',
+            'id_purchase_status' => 'required|integer',
+        ]);
+        $validated['course_id'] = $user_request->course_id;
+        $validated['teacher_id'] = $user->id;
+
+
+        $user_request->load('user', 'teacher', 'course', 'purchase');
         if ($user->id == $user_request->user_id) {
             unset($validated['response']);
         } else {

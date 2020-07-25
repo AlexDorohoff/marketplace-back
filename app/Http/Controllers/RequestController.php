@@ -132,9 +132,7 @@ class RequestController extends Controller
         $user_request = AppRequest::findOrFail($id);
         $user = Auth::user();
 
-        if ($user->id != $user_request->teacher_id) {
-            throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
-        }
+        $this->validateOwnership($user, $user_request);
 
         $user_request->load('user', 'teacher', 'course');
         $user_request->is_approved = 1;
@@ -157,15 +155,13 @@ class RequestController extends Controller
         $user_request = AppRequest::findOrFail($id);
         $user = Auth::user();
 
-        if ($user->id != $user_request->user_id || $user->id != $user_request->teacher_id) {
-            throw new \Illuminate\Auth\Access\AuthorizationException('Access denied');
-        }
+        $this->validateOwnership($user, $user_request);
 
         $user_request->delete();
         return response()->json([
             'code' => 200,
             'message' => 'Deleted',
-        ], 501);
+        ], 200);
 
     }
 
